@@ -51,5 +51,26 @@ with temp as (
     WHERE label = 1
     GROUP BY srcip, dsport
 )
+select *
+from temp
+order by Attacks, srcip, dsport
+;
+
+--checking the datetime column to get the min date and max date
+select max(from_unixtime(Stime)) as max_stime, 
+    max(from_unixtime(Ltime)) as max_Ltime,
+    min(from_unixtime(Stime)) as min_stime, 
+    min(from_unixtime(Ltime)) as min_Ltime
+from big_data_anlytics.UNSWNB15
+;
+
+-- Getting the top five attack categories with the gretest number of attacks
+select attack_cat, count(*) as attacks
+from big_data_anlytics.UNSWNB15
+where label = 1
+group by attack_cat 
+order by attacks desc
+limit 5
+;
 
 describe big_data_anlytics.UNSWNB15;
